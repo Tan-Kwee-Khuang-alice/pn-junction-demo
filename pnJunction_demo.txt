@@ -1,0 +1,50 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+
+export default function PNJunctionDemo() {
+  const [bias, setBias] = useState("none");
+
+  const playSound = (type) => {
+    const audio = new Audio(
+      type === "forward"
+        ? "/sounds/forward.mp3"
+        : type === "reverse"
+        ? "/sounds/reverse.mp3"
+        : "/sounds/reset.mp3"
+    );
+    audio.play();
+  };
+
+  return (
+    <div className="flex flex-col items-center p-6 bg-gray-100 rounded-xl shadow-lg">
+      <h2 className="text-xl font-bold mb-4">PN Junction Diode Simulation</h2>
+      <div className="relative flex items-center w-96 h-40 bg-gray-200 rounded-lg p-4 border-2 border-gray-400">
+        {/* P-Region */}
+        <div className="w-1/2 h-full bg-red-400 flex items-center justify-center text-white font-bold">
+          P-Region
+        </div>
+        
+        {/* Depletion Region */}
+        <motion.div
+          className="w-12 h-full bg-gray-500 flex items-center justify-center text-white font-bold"
+          animate={{ width: bias === "forward" ? 5 : bias === "reverse" ? 24 : 12 }}
+        >
+          Barrier
+        </motion.div>
+        
+        {/* N-Region */}
+        <div className="w-1/2 h-full bg-blue-400 flex items-center justify-center text-white font-bold">
+          N-Region
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="mt-4 flex space-x-4">
+        <Button onClick={() => { setBias("forward"); playSound("forward"); }} className="bg-green-500 hover:bg-green-600">Forward Bias</Button>
+        <Button onClick={() => { setBias("reverse"); playSound("reverse"); }} className="bg-red-500 hover:bg-red-600">Reverse Bias</Button>
+        <Button onClick={() => { setBias("none"); playSound("reset"); }} className="bg-gray-500 hover:bg-gray-600">Reset</Button>
+      </div>
+    </div>
+  );
+}
